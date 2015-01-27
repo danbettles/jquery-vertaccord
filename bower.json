@@ -1,0 +1,21 @@
+{
+  "name": "jquery-vertaccord",
+  "version": "1.0.0",
+  "authors": [
+    "Dan Bettles <danbettles@yahoo.co.uk>"
+  ],
+  "description": "A very basic jQuery vertical accordion.",
+  "keywords": [
+    "jQuery",
+    "vertical",
+    "accordion"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
