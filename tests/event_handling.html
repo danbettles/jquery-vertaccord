@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Event Handling | jquery-vertaccord</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="application.css"/>
+    </head>
+
+    <body>
+        <h1>Event Handling</h1>
+
+        <p>Take a look at your console.</p>
+
+        <div class="panel">
+            <ul class="characters">
+                <li>
+                    <span>Spongebob</span>
+                    <img src="http://img4.wikia.nocookie.net/__cb20101025015316/spongebob/images/thumb/c/c6/SpongeBob_SquarePants.svg/200px-SpongeBob_SquarePants.svg.png"/>
+                </li>
+                <li>
+                    <span>Gary</span>
+                    <img src="http://img1.wikia.nocookie.net/__cb20100922010234/spongebob/images/thumb/8/81/Gary_the_Snail.svg/200px-Gary_the_Snail.svg.png"/>
+                </li>
+                <li>
+                    <span>Patrick</span>
+                    <img src="http://img3.wikia.nocookie.net/__cb20100724183918/spongebob/images/thumb/3/33/Patrick_Star.svg/200px-Patrick_Star.svg.png"/>
+                </li>
+            </ul>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="../src/jquery.vertaccord.js"></script>
+        <script>
+            /*globals jQuery, document, console*/
+
+            jQuery(document).ready(function () {
+                jQuery('.characters').vertaccord({
+                    closedHeight: 24,
+                    beforeOpen: function () {
+                        var vertaccord = jQuery(this).data('vertaccord'),
+                            $openChild = vertaccord.getOpenChild();
+
+                        console.log('`beforeOpen` event handler called.');
+
+                        if ($openChild.size() === 0) {
+                            console.log('Nothing is open: the plugin method has only just been called.');
+                        } else {
+                            console.log($openChild.find('span').text() + ' about to be closed.');
+                        }
+                    },
+                    afterOpen: function () {
+                        var vertaccord = jQuery(this).data('vertaccord'),
+                            $openChild = vertaccord.getOpenChild();
+
+                        console.log('`afterOpen` event handler called.');
+                        console.log($openChild.find('span').text() + ' now open.');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -12,7 +12,9 @@
 
         this.config = jQuery.extend({
             closedHeight: undefined,
-            animationDuration: 400
+            animationDuration: 400,
+            beforeOpen: undefined,
+            afterOpen: undefined
         }, config, inlineConfig);
     }
 
@@ -22,8 +24,8 @@
             return this.config.$parent;
         },
 
-        getChildren: function () {
-            return this.getParent().children();
+        getChildren: function (selector) {
+            return this.getParent().children(selector);
         },
 
         closeChild: function ($child, animate) {
@@ -38,18 +40,39 @@
             return this;
         },
 
-        closeOtherChildren: function ($child) {
-            return this.closeChild(this.getChildren().not($child));
+        closeOtherChildren: function ($openingChild) {
+            return this.closeChild(this.getChildren().not($openingChild));
+        },
+
+        callEventHandler: function (name) {
+            if (typeof this.config[name] === 'function') {
+                //In true jQuery style, call the event handler in the context of the DOM element
+                this.config[name].call(this.getParent().get(0));
+            }
+        },
+
+        /**
+         * Returns the child that's currently open.
+         * 
+         * @returns {jQuery}
+         */
+        getOpenChild: function () {
+            return this.getChildren('.vertaccord-open');
         },
 
         openChild: function ($child, animate) {
-            var animationDuration = animate === false ? 0 : this.config.animationDuration,
+            var vertaccord = this,
+                animationDuration = animate === false ? 0 : this.config.animationDuration,
                 initialHeight = $child.data('vertaccord.initialHeight');
+
+            this.callEventHandler('beforeOpen');
 
             $child.animate({height: String(initialHeight) + 'px'}, animationDuration, null, function () {
                 $child
                     .removeClass('vertaccord-closed')
                     .addClass('vertaccord-open');
+
+                vertaccord.callEventHandler('afterOpen');
             });
 
             return this;
@@ -93,9 +116,15 @@
     jQuery.fn.extend({
         vertaccord: function (config) {
             return this.each(function () {
-                (new VerticalAccordion(jQuery.extend({}, config, {
-                    $parent: jQuery(this)
-                }))).play();
+                var $parent = jQuery(this),
+                    vertaccord = new VerticalAccordion(jQuery.extend({}, config, {
+                        $parent: $parent
+                    }));
+
+                $parent
+                    .data('vertaccord', vertaccord)
+                    .data('vertaccord')
+                        .play();
             });
         }
     });
