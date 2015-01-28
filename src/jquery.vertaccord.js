@@ -44,11 +44,15 @@
             return this.closeChild(this.getChildren().not($openingChild));
         },
 
-        callEventHandler: function (name) {
-            if (typeof this.config[name] === 'function') {
-                //In true jQuery style, call the event handler in the context of the DOM element
-                this.config[name].call(this.getParent().get(0));
+        callEventHandler: function (name, args) {
+            if (typeof this.config[name] !== 'function') {
+                return;
             }
+
+            var finalArgs = args || [];
+
+            //In true jQuery style, call the event handler in the context of the DOM element
+            this.config[name].apply(this.getParent().get(0), finalArgs);
         },
 
         /**
@@ -60,19 +64,19 @@
             return this.getChildren('.vertaccord-open');
         },
 
-        openChild: function ($child, animate) {
+        openChild: function ($openingChild, animate) {
             var vertaccord = this,
                 animationDuration = animate === false ? 0 : this.config.animationDuration,
-                initialHeight = $child.data('vertaccord.initialHeight');
+                initialHeight = $openingChild.data('vertaccord.initialHeight');
 
-            this.callEventHandler('beforeOpen');
+            this.callEventHandler('beforeOpen', [$openingChild.get(0)]);
 
-            $child.animate({height: String(initialHeight) + 'px'}, animationDuration, null, function () {
-                $child
+            $openingChild.animate({height: String(initialHeight) + 'px'}, animationDuration, null, function () {
+                $openingChild
                     .removeClass('vertaccord-closed')
                     .addClass('vertaccord-open');
 
-                vertaccord.callEventHandler('afterOpen');
+                vertaccord.callEventHandler('afterOpen', [$openingChild.get(0)]);
             });
 
             return this;

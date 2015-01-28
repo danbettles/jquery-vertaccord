@@ -37,7 +37,7 @@
             jQuery(document).ready(function () {
                 jQuery('.characters').vertaccord({
                     closedHeight: 24,
-                    beforeOpen: function () {
+                    beforeOpen: function (target) {
                         var vertaccord = jQuery(this).data('vertaccord'),
                             $openChild = vertaccord.getOpenChild();
 
@@ -48,13 +48,17 @@
                         } else {
                             console.log($openChild.find('span').text() + ' about to be closed.');
                         }
+
+                        console.log(jQuery(target).find('span').text() + ' about to be opened.');
+                        console.log('---');
                     },
-                    afterOpen: function () {
+                    afterOpen: function (target) {
                         var vertaccord = jQuery(this).data('vertaccord'),
                             $openChild = vertaccord.getOpenChild();
 
                         console.log('`afterOpen` event handler called.');
                         console.log($openChild.find('span').text() + ' now open.');
+                        console.log('---');
                     }
                 });
             });
