@@ -3,11 +3,14 @@
   "authors": [
     "Dan Bettles <danbettles@yahoo.co.uk>"
   ],
-  "description": "A very basic jQuery vertical accordion.",
+  "description": "jquery-vertaccord is a minimal implementation of a vertical accordion.  It was designed to be more easily customizable and to leave as much room as possible for the CSS to handle decoration.",
   "keywords": [
     "jQuery",
     "vertical",
-    "accordion"
+    "accordion",
+    "basic",
+    "lightweight",
+    "minimal"
   ],
   "license": "MIT",
   "ignore": [
